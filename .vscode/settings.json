@@ -1,0 +1,9 @@
+{
+    "editor.wordWrap": "on",
+    "editor.defaultFormatter": "esbenp.prettier-vscode",
+    "editor.formatOnPaste": true,
+    "editor.formatOnType": true,
+    "[csharp]": {
+        "editor.defaultFormatter": "Leopotam.csharpfixformat"
+    }
+}
