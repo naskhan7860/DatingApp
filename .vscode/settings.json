@@ -4,6 +4,6 @@
     "editor.formatOnPaste": true,
     "editor.formatOnType": true,
     "[csharp]": {
-        "editor.defaultFormatter": "ms-dotnettools.csharp"
+        "editor.defaultFormatter": "Leopotam.csharpfixformat"
     }
 }
