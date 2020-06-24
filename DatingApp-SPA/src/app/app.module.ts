@@ -12,6 +12,8 @@ import { NgxGalleryModule } from '@kolkov/ngx-gallery';
 import { FileUploadModule } from 'ng2-file-upload';
 import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';
 import { TimeagoModule } from 'ngx-timeago';
+import { PaginationModule } from 'ngx-bootstrap/pagination';
+import { ButtonsModule } from 'ngx-bootstrap/buttons';
 
 import { AppComponent } from './app.component';
 import { ValueComponent } from './Value/Value.component';
@@ -54,6 +56,8 @@ export function tokenGetter() {
     BrowserAnimationsModule,
     NgxGalleryModule,
     FileUploadModule,
+    ButtonsModule.forRoot(),
+    PaginationModule.forRoot(),
     BsDatepickerModule.forRoot(),
     BsDropdownModule.forRoot(),
     TimeagoModule.forRoot(),
