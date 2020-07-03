@@ -1,3 +1,4 @@
+import { appRoutes } from './../routes';
 import { map } from 'rxjs/operators';
 import { PaginatedResult } from './../_models/Pagination';
 import { Injectable } from '@angular/core';
@@ -5,7 +6,7 @@ import { environment } from 'src/environments/environment';
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { User } from '../_models/user';
-
+import { Message } from '../_models/Message';
 
 // const httpOptions = {
 //   headers: new HttpHeaders({
@@ -22,10 +23,10 @@ export class UserService {
   constructor(private http: HttpClient) {}
 
   getUsers(
-    page?:number,
-    itemsPerPage?:number,
+    page?: number,
+    itemsPerPage?: number,
     userParams?,
-    likesParam? 
+    likesParam?
   ): Observable<PaginatedResult<User[]>> {
     const paginatedResult: PaginatedResult<User[]> = new PaginatedResult<
       User[]
@@ -87,6 +88,41 @@ export class UserService {
   }
 
   sendLike(id: number, recipientId: number) {
-    return this.http.post(this.baseUrl + 'users/' + id + '/like/' + recipientId, {});
+    return this.http.post(
+      this.baseUrl + 'users/' + id + '/like/' + recipientId,
+      {}
+    );
+  }
+
+  getMessages(id: number, page?, itemsPerPage?, messageContainer?) {
+    const paginationResult: PaginatedResult<Message[]> = new PaginatedResult<
+      Message[]
+    >();
+
+    let params = new HttpParams();
+
+    params = params.append('MessageContainer', messageContainer);
+
+    if (page != null && itemsPerPage != null) {
+      params = params.append('pageNumber', page.toString());
+      params = params.append('pageSize', itemsPerPage.toString());
+    }
+
+    return this.http
+      .get<Message[]>(this.baseUrl + 'users/' + id + '/messages', {
+        observe: 'response',
+        params,
+      })
+      .pipe(
+        map((response) => {
+          paginationResult.result = response.body;
+          if (response.headers.get('Pagination') != null) {
+            paginationResult.pagination = JSON.parse(
+              response.headers.get('Pagination')
+            );
+          }
+          return paginationResult;
+        })
+      );
   }
 }
