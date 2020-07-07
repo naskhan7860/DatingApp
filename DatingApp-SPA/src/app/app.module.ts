@@ -1,3 +1,4 @@
+import { MessagesResolver } from './_resolvers/Messages.resolver';
 import { ErrorInterceptorProvider } from './_services/error.interceptor';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -28,6 +29,8 @@ import { MemberCardComponent } from './members/member-card/member-card.component
 import { MemberDetailComponent } from './members/member-detail/member-detail.component';
 import { MemeberEditComponent } from './members/memeber-edit/memeber-edit.component';
 import { PhotoEditorComponent } from './members/photo-editor/photo-editor.component';
+import { MemberMessagesComponent } from './members/member-messages/member-messages.component';
+
 
 export function tokenGetter() {
   return localStorage.getItem('token');
@@ -47,6 +50,7 @@ export function tokenGetter() {
     MemberDetailComponent,
     MemeberEditComponent,
     PhotoEditorComponent,
+    MemberMessagesComponent
   ],
   imports: [
     BrowserModule,
@@ -71,7 +75,7 @@ export function tokenGetter() {
     }),
     TabsModule.forRoot(),
   ],
-  providers: [ErrorInterceptorProvider],
+  providers: [ErrorInterceptorProvider, MessagesResolver],
   bootstrap: [AppComponent],
 })
 export class AppModule {}

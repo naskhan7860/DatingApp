@@ -39,7 +39,7 @@ export const appRoutes: Routes = [
       {
         path: 'messages',
         component: MessagesComponent,
-        resolve: { messsages: MessagesResolver },
+        resolve: { messages: MessagesResolver },
       },
       {
         path: 'lists',

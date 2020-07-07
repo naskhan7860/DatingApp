@@ -40,5 +40,11 @@
       "strikethrough": false,
       "backgroundColor": "transparent"
     }
-  ]
+  ],
+  "[html]": {
+    "editor.defaultFormatter": "vscode.html-language-features"
+  },
+  "[typescript]": {
+    "editor.defaultFormatter": "vscode.typescript-language-features"
+  }
 }

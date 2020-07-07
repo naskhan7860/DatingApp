@@ -7,9 +7,7 @@ import { AlertifyService } from '../_services/alertify.service';
 import { Observable, of } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 
-@Injectable({
-  providedIn: 'root',
-})
+@Injectable()
 export class MessagesResolver implements Resolve<Message[]> {
   pageNumber = 1;
   pageSize = 5;
@@ -17,22 +15,22 @@ export class MessagesResolver implements Resolve<Message[]> {
 
   constructor(
     private userService: UserService,
-    private authservice: AuthService,
     private router: Router,
-    private alertify: AlertifyService
+    private alertify: AlertifyService,
+    private authService: AuthService
   ) {}
 
   resolve(route: ActivatedRouteSnapshot): Observable<Message[]> {
     return this.userService
       .getMessages(
-        this.authservice.decodedToken.nameid,
+        this.authService.decodedToken.nameid,
         this.pageNumber,
         this.pageSize,
         this.messageContainer
       )
       .pipe(
         catchError((error) => {
-          this.alertify.error('Problem retrieving messsages');
+          this.alertify.error('Problem retrieving messages');
           this.router.navigate(['/home']);
           return of(null);
         })
