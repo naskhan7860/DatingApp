@@ -24,7 +24,8 @@ namespace DatingApp.API {
 
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices (IServiceCollection services) {
-            services.AddDbContext<DataContext> (x => x.UseSqlServer (Configuration.GetConnectionString ("DefaultConnection")));
+            // services.AddDbContext<DataContext> (x => x.UseSqlServer (Configuration.GetConnectionString ("DefaultConnection")));
+
             services.AddControllers ().AddNewtonsoftJson (opt => {
                 opt.SerializerSettings.ReferenceLoopHandling =
                     Newtonsoft.Json.ReferenceLoopHandling.Ignore;
@@ -47,7 +48,24 @@ namespace DatingApp.API {
             services.AddScoped<LogUserActivity> ();
         }
 
-        // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
+        public void ConfigureDevelopmentServices (IServiceCollection services) {
+            // place code here to connect to development datbase.
+            services.AddDbContext<DataContext> (x => {
+                x.UseLazyLoadingProxies ();
+                x.UseSqlServer (Configuration.GetConnectionString ("DefaultConnection"));
+            });
+
+            ConfigureServices (services);
+        }
+        public void ConfigureProductionServices (IServiceCollection services) {
+            // place code here to connect to production datbase.
+            services.AddDbContext<DataContext> (x => {
+                x.UseLazyLoadingProxies ();
+                x.UseSqlServer (Configuration.GetConnectionString ("DefaultConnection"));
+            });
+
+            ConfigureServices (services);
+        }
         public void Configure (IApplicationBuilder app, IWebHostEnvironment env) {
             if (env.IsDevelopment ()) {
                 app.UseDeveloperExceptionPage ();
@@ -63,18 +81,24 @@ namespace DatingApp.API {
 
                     });
                 });
+                // app.UseHsts();
             }
 
             // app.UseHttpsRedirection();
 
             app.UseRouting ();
 
-            app.UseCors (x => x.AllowAnyOrigin ().AllowAnyMethod ().AllowAnyHeader ());
             app.UseAuthentication ();
             app.UseAuthorization ();
 
+            app.UseCors (x => x.AllowAnyOrigin ().AllowAnyMethod ().AllowAnyHeader ());
+
+            app.UseDefaultFiles ();
+            app.UseStaticFiles ();
+
             app.UseEndpoints (endpoints => {
                 endpoints.MapControllers ();
+                endpoints.MapFallbackToController ("Index", "Fallback");
             });
         }
     }
